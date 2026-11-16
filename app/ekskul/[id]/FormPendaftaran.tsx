@@ -1,7 +1,24 @@
+
 "use client";
 
 import { useActionState } from "react";
 import { daftarEkskul } from "./actions";
+
+type FormState = {
+  success?: boolean;
+  message?: string;
+  errors?: {
+    umum?: string;
+    nama?: string;
+    kelas?: string;
+  };
+  values?: {
+    nama?: string;
+    kelas?: string;
+  };
+};
+
+const initialState: FormState = {};
 
 export default function FormPendaftaran({
   ekskulId,
@@ -13,15 +30,18 @@ export default function FormPendaftaran({
   defaultKelas: string;
 }) {
   const [state, formAction, isPending] = useActionState(
-    async (prevState: any, formData: FormData): Promise<any> => {
-      return await daftarEkskul(prevState, formData);
-    },
-    {}
+    daftarEkskul,
+    initialState
   );
 
   return (
-    <form action={formAction} className="bg-white shadow rounded-lg p-6 mt-6 border space-y-4">
-      <h2 className="text-xl font-semibold mb-2">Formulir Pendaftaran Ekskul</h2>
+    <form
+      action={formAction}
+      className="bg-white shadow rounded-lg p-6 mt-6 border space-y-4"
+    >
+      <h2 className="text-xl font-semibold mb-2">
+        Formulir Pendaftaran Ekskul
+      </h2>
 
       <input type="hidden" name="ekskulId" value={ekskulId} />
 
@@ -38,7 +58,9 @@ export default function FormPendaftaran({
       )}
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Nama Lengkap
+        </label>
         <input
           type="text"
           name="nama"
@@ -46,12 +68,16 @@ export default function FormPendaftaran({
           className="mt-1 block w-full border rounded-md p-2"
         />
         {state?.errors?.nama && (
-          <p className="text-red-500 text-xs mt-1">{state.errors.nama}</p>
+          <p className="text-red-500 text-xs mt-1">
+            {state.errors.nama}
+          </p>
         )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Kelas</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Kelas
+        </label>
         <input
           type="text"
           name="kelas"
@@ -59,7 +85,9 @@ export default function FormPendaftaran({
           className="mt-1 block w-full border rounded-md p-2"
         />
         {state?.errors?.kelas && (
-          <p className="text-red-500 text-xs mt-1">{state.errors.kelas}</p>
+          <p className="text-red-500 text-xs mt-1">
+            {state.errors.kelas}
+          </p>
         )}
       </div>
 
